@@ -2,6 +2,7 @@ package model
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 )
 
@@ -20,7 +21,7 @@ func (one *B_list) Add() error {
 	//user:=User{UserId:one.UserId}  判断level
 	book := Book{Bookid: one.Bookid}
 	DB.Debug().Select("available").Where("bookid = ?", book.Bookid).Take(&book)
-	if book.Available {
+	if book.Available { //书籍可借
 		book.Available = false
 		one.Starttime = time.Now()
 		work := DB.Begin() //开始事务
@@ -37,4 +38,10 @@ func (one *B_list) Add() error {
 	} else {
 		return AddError{Message: "该书不可借出！"}
 	}
+}
+func (one *B_list) End() error {
+	DB.Debug().Where("endtime is null and user_id= ? and bookid= ?", one.UserId, one.Bookid).Take(&one) //SELECT * FROM `BorrowList` WHERE endtime is null and user_id= 5 and bookid= 2 LIMIT 1
+	fmt.Println(one)
+	fmt.Println(one.Starttime)
+	return nil
 }

@@ -8,7 +8,7 @@ import (
 type Cookie struct {
 }
 
-func (Cookie) Get(c *gin.Context) {
+func (Cookie) Get(c *gin.Context) { //没有从cookie获取到id就重新登录
 	userid, _ := c.Cookie("userid")
 	if len(userid) == 0 {
 		c.JSON(http.StatusOK, gin.H{

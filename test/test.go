@@ -6,18 +6,18 @@ import (
 	"sort"
 )
 
-func Pwd() {
+func Pwd() { //测试密码加密
 	password := "123"
 	//hashedPassword := "$2b$12$Y8S9341NSNzpr1捡1VZlO.9Ed3rKFWsVBZ8dy.7V4JLO7厮iUfKLOuC"
 	// 对密码进行加盐并生成哈希值
-	newhashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	newhashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost) //给123加密
 	if err != nil {
 		fmt.Println("Error generating password hash:", err)
 		return
 	}
-	n, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	n, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost) //两次加密出的hash不同
 	fmt.Println(string(newhashedPassword), "--vs--", string(n))
-	err = bcrypt.CompareHashAndPassword(n, []byte(password))
+	err = bcrypt.CompareHashAndPassword(n, []byte(password)) //将加密后的哈希与原密码匹配
 	if err == nil {
 		fmt.Println("Password correct")
 	} else {

@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	DBUser = "TC"
+	DBUser = "root"
 	DBPWD  = "TC123"
 	DBIP   = "127.0.0.1:3306"
 	DBName = "ccy"
