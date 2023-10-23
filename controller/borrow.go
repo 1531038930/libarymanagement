@@ -59,6 +59,7 @@ func (Borrow) Info(c *gin.Context) { //借书
 			"err": err,
 		})
 		c.Abort()
+		return
 	}
 	userid, err := strconv.Atoi(useridstr)
 	if err != nil {
@@ -67,6 +68,7 @@ func (Borrow) Info(c *gin.Context) { //借书
 			"err": err,
 		})
 		c.Abort()
+		return
 	}
 	list.UserId = uint(userid) //userid转换为uint类型
 	err = list.Add()
@@ -76,7 +78,9 @@ func (Borrow) Info(c *gin.Context) { //借书
 			"err": err,
 		})
 		c.Abort()
+		return
 	}
+	c.String(http.StatusOK, "借书成功！")
 }
 func (Borrow) Revert(c *gin.Context) {
 	bookid, err := strconv.Atoi(c.Param("bookid")) //取得动态路由参数
@@ -86,6 +90,7 @@ func (Borrow) Revert(c *gin.Context) {
 			"err": err,
 		})
 		c.Abort()
+		return
 	}
 	var list model.B_list
 	list.Bookid = uint(bookid)
@@ -96,6 +101,7 @@ func (Borrow) Revert(c *gin.Context) {
 			"err": err,
 		})
 		c.Abort()
+		return
 	}
 	userid, err := strconv.Atoi(useridstr)
 	if err != nil {
@@ -104,14 +110,18 @@ func (Borrow) Revert(c *gin.Context) {
 			"err": err,
 		})
 		c.Abort()
+		return
 	}
 	list.UserId = uint(userid)
 	err = list.End() //进入归还sql
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"msg": "借书错误",
-			"err": err,
+			"msg": "还书错误",
+			"err": err.Error(),
 		})
 		c.Abort()
+		return
+	} else {
+		c.String(http.StatusOK, "还书成功")
 	}
 }

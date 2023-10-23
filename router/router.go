@@ -26,10 +26,10 @@ func LMsys() {
 	}
 	book := r.Group("/book") //增加书籍、借书、归还
 	{
-		book.GET("/", controller.Cookie{}.Get, controller.Borrow{}.Static)
-		book.POST("/add", controller.Borrow{}.Add)                                       //添加书
-		book.GET("/borrow/:bookid", controller.Cookie{}.Get, controller.Borrow{}.Info)   //借书
-		book.GET("/return/:bookid", controller.Cookie{}.Get, controller.Borrow{}.Revert) //归还
+		book.GET("/", controller.Cookie{}.GetWithLevel, controller.Borrow{}.Static)
+		book.POST("/add", controller.Cookie{}.GetWithLevel, controller.Borrow{}.Add)     //添加书
+		book.POST("/borrow/:bookid", controller.Cookie{}.Get, controller.Borrow{}.Info)  //借书
+		book.PUT("/borrow/:bookid", controller.Cookie{}.Get, controller.Borrow{}.Revert) //归还
 	}
 	r.Run()
 }

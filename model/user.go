@@ -1,6 +1,7 @@
 package model
 
 import (
+	"errors"
 	"fmt"
 	"golang.org/x/crypto/bcrypt"
 	"time"
@@ -58,4 +59,15 @@ func (one *User) Check() error {
 	}
 	err := bcrypt.CompareHashAndPassword([]byte(ckuser.Pwd), []byte(one.Pwd)) //将密码与数据库加密后的匹配
 	return err
+}
+func (one *User) CheckLevel() error {
+	var ckuser User //通过user_id去数据库查询
+	res := DB.Debug().Select("level").Where("user_id = ? and del_date= 0", one.UserId).Take(&ckuser)
+	if res.Error != nil {
+		return res.Error
+	}
+	if ckuser.Level != 1 { //1权限比2高
+		return errors.New("权限不足")
+	}
+	return nil
 }
