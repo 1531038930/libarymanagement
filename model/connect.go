@@ -9,6 +9,7 @@ import (
 const (
 	DBUser = "root"
 	DBPWD  = "TC123"
+	//DBIP   = "mysql-net:3306" //docker mysql别名alias
 	DBIP   = "127.0.0.1:3306"
 	DBName = "ccy"
 )

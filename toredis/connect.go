@@ -16,7 +16,7 @@ var (
 func init() {
 	ctx = context.Background()
 	Rdb = redis.NewClient(&redis.Options{
-		Addr: ":6379",
+		//Addr: "redis-net:6379", //docker加 redis别名
 	})
 	//defer Rdb.Close()
 }
